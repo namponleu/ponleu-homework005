@@ -1,15 +1,34 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import exception.CourseNotFoundException;
+import service.CourseService;
+import service.CourseServiceImp;
+import view.View;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import java.util.InputMismatchException;
+
+
+public class Main {
+    private final static CourseService courseService = new CourseServiceImp();
+
+    public static void main(String[] args) {
+        while (true) {
+            try {
+                switch (View.menu()) {
+                    case 0, 99 -> {
+                        System.out.println("Exiting the application...");
+                        System.exit(99);
+                    }
+                    case 1 -> courseService.addNewCourse();
+                    case 2 -> courseService.listAllCourses();
+                    case 3 -> courseService.findCourseByID();
+                    case 4 -> courseService.findCourseByTitle();
+                    case 5 -> courseService.removeCourse();
+                    default -> System.out.println("[+] Invalid option!");
+                }
+            } catch (CourseNotFoundException courseNotFoundException) {
+                System.out.println(courseNotFoundException.getMessage());
+            }catch (InputMismatchException inputMismatchException){
+                System.out.println("[+] Invalid input. Please try again.");
+            }
         }
     }
 }
